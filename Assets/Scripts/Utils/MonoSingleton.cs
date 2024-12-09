@@ -20,4 +20,24 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
             return _instance;
         }
     }
+
+    [SerializeField] private bool _dontDestroyOnLoad = false;
+
+    protected virtual void Awake()
+    {
+        if(_instance == null)
+        {
+            _instance = this as T;
+
+            if(_dontDestroyOnLoad)
+            {
+                DontDestroyOnLoad(gameObject);
+            }
+        }
+        else if (_instance != this)
+        {
+            Debug.LogWarning("Puko ti je monosingleton: " + gameObject.name);
+            Destroy(gameObject);
+        }
+    }
 }
