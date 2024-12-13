@@ -60,6 +60,7 @@ public class CaseFileUi : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         if (isDocked)
         {
             image.sprite = upperSprite;
+            canvasGroup.alpha = 1f;
             button.interactable = false;
             return;
         }
@@ -112,12 +113,14 @@ public class CaseFileUi : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public void SetLockTrue()
     {
+
         isDocked = true;
         SpriteSwap();
     }
 
     public void SetLockFalse()
     {
+        canvasGroup.alpha = 1.0f;
         isDocked = false;
         SpriteSwap();
     }
