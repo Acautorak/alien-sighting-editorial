@@ -57,15 +57,32 @@ public class CaseFileUi : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     private void SpriteSwap()
     {
-        if (rectTransform.anchoredPosition.y > 0)
+        if (isDocked)
         {
             image.sprite = upperSprite;
+            button.interactable = false;
+            return;
+        }
+
+        if (rectTransform.anchoredPosition.y > 0 + 100)
+        {
+            int i = 0;
+            if(image.sprite != upperSprite)
+            {
+            image.sprite = upperSprite;
             rectTransform.localScale = new Vector3(upperScale, upperScale, 1);
+            Debug.LogWarning("Poziv" + i++);
+            }
+            if (button.interactable) button.interactable = false;
         }
         else
         {
+            if(image.sprite != lowerSprite)
+            {
             image.sprite = lowerSprite;
             rectTransform.localScale = Vector3.one;
+            }
+            if (!button.interactable) button.interactable = true;
         }
     }
 
@@ -137,12 +154,16 @@ public class CaseFileUi : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     private void StartingAnimation()
     {
-        LeanTween.scaleX(gameObject, 0.3f, revealDuration);
-        LeanTween.scaleY(gameObject, 0.3f, revealDuration)
-        .setEase(LeanTweenType.easeOutQuad);
+        rectTransform.pivot = new Vector2(0.5f, 1f);
+        //LeanTween.scaleX(gameObject, upperScale, revealDuration).setEase(LeanTweenType.easeInQuad);
+        LeanTween.scaleY(gameObject, upperScale, revealDuration)
+        .setEase(LeanTweenType.easeOutQuad).setFrom(0);
         LeanTween.value(gameObject, 0, 1, alphaDuration)
         .setEase(LeanTweenType.easeOutQuad)
-        .setOnUpdate((float val) => { canvasGroup.alpha = val; });
+        .setOnUpdate((float val) => { canvasGroup.alpha = val; }).setOnComplete(() =>
+        {
+            rectTransform.pivot = new Vector2(0.5f, 0.5f);
+        });
     }
 
     private void OnEnable()
@@ -151,8 +172,9 @@ public class CaseFileUi : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         rectTransform.anchoredPosition = startingPosition;
         SpriteSwap();
         SetLockFalse();
-        rectTransform.localScale = new Vector3(1f, 0, 1f);
+        rectTransform.localScale = new Vector3(upperScale, 0, 1f);
         canvasGroup.alpha = 0f;
+        canvasGroup.blocksRaycasts = true;
         StartingAnimation();
     }
 

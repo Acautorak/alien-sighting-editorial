@@ -355,7 +355,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 0.85882354}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -399,6 +399,7 @@ MonoBehaviour:
   bounceDistance: 1000
   revealDuration: 2
   alphaDuration: 2
+  isDocked: 0
 --- !u!1 &416795329
 GameObject:
   m_ObjectHideFlags: 0
@@ -1549,9 +1550,9 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 838464650}
-  - {fileID: 731538296}
   - {fileID: 416795332}
   - {fileID: 1152625749}
   - {fileID: 646153760}
   - {fileID: 225152295}
+  - {fileID: 731538296}
   - {fileID: 1004455360}
