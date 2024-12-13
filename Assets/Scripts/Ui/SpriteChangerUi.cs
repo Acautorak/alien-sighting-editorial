@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,18 @@ public class SpriteChangerUi : MonoBehaviour
 
     [SerializeField] private RectTransform rectTransform;
     [SerializeField] private Image image;
+    [SerializeField] private Button button;
+    
+    private void Start()
+    {
+        button.onClick.AddListener(() => {Debug.Log("Dodji kuci");});
+       // NotificationBuss.Subscribe("itemDropped", OnItemDropped);
+    }
+
+    private void OnItemDropped(object obj)
+    {
+        throw new NotImplementedException();
+    }
 
     private void Update()
     {
@@ -24,4 +37,7 @@ public class SpriteChangerUi : MonoBehaviour
             rectTransform.localScale = Vector3.one;
         }
     }
+
+
+
 }
