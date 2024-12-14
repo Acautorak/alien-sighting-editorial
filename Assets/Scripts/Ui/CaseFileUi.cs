@@ -68,20 +68,20 @@ public class CaseFileUi : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         if (rectTransform.anchoredPosition.y > 0 + 100)
         {
             int i = 0;
-            if(image.sprite != upperSprite)
+            if (image.sprite != upperSprite)
             {
-            image.sprite = upperSprite;
-            rectTransform.localScale = new Vector3(upperScale, upperScale, 1);
-            Debug.LogWarning("Poziv" + i++);
+                image.sprite = upperSprite;
+                rectTransform.localScale = new Vector3(upperScale, upperScale, 1);
+                Debug.LogWarning("Poziv" + i++);
             }
             if (button.interactable) button.interactable = false;
         }
         else
         {
-            if(image.sprite != lowerSprite)
+            if (image.sprite != lowerSprite)
             {
-            image.sprite = lowerSprite;
-            rectTransform.localScale = Vector3.one;
+                image.sprite = lowerSprite;
+                rectTransform.localScale = Vector3.one;
             }
             if (!button.interactable) button.interactable = true;
         }
@@ -157,6 +157,7 @@ public class CaseFileUi : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     private void StartingAnimation()
     {
+        SetLockTrue();
         rectTransform.pivot = new Vector2(0.5f, 1f);
         //LeanTween.scaleX(gameObject, upperScale, revealDuration).setEase(LeanTweenType.easeInQuad);
         LeanTween.scaleY(gameObject, upperScale, revealDuration)
@@ -165,7 +166,23 @@ public class CaseFileUi : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         .setEase(LeanTweenType.easeOutQuad)
         .setOnUpdate((float val) => { canvasGroup.alpha = val; }).setOnComplete(() =>
         {
-            rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            StartSmoothPivotChangeAnimation();
+            SetLockFalse();
+        });
+    }
+
+    private void StartSmoothPivotChangeAnimation()
+    {
+        Vector2 targetPivot = new Vector2(0.5f, 0.5f);
+        Vector2 startPivot = rectTransform.pivot;
+        Vector2 startingPosition = rectTransform.anchoredPosition;
+
+        LeanTween.value(gameObject, 0, 1, moveTime).setOnUpdate((float t) =>
+        {
+            rectTransform.pivot = Vector2.Lerp(startPivot, targetPivot, t);
+            rectTransform.anchoredPosition = Vector2.Lerp(startingPosition,
+            new Vector2(startingPosition.x, startingPosition.y
+            - rectTransform.rect.height * (startPivot.y - targetPivot.y) * 2 * upperScale), t);
         });
     }
 
