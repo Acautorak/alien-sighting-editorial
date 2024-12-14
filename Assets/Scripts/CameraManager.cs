@@ -13,10 +13,16 @@ public class CameraManager : MonoSingleton<CameraManager>
 
     private void Start()
     {
+        NotificationBuss.Subscribe("caseDropped", OnCaseDropped);
         if(targetCamera != null)
         {
             originalPosition = targetCamera.transform.position;
         }
+    }
+
+    private void OnCaseDropped(object obj)
+    {
+        ShakeCameraPublish();
     }
 
     private void ShakeCameraPublish()
@@ -40,4 +46,6 @@ public class CameraManager : MonoSingleton<CameraManager>
             originalPosition = targetCamera.transform.localPosition;
         }
     }
+
+    
 }
