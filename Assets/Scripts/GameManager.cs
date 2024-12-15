@@ -6,5 +6,5 @@ public class GameManager : MonoSingleton<GameManager>
     [SerializeField] private int metaScore;
     [SerializeField] private int inGameScore;
     [SerializeField] private int currentStep;
-    [SerializeField] private int currentStreakCaseFile;
+    [SerializeField] private int currentStreakCaseFile; 
 }
