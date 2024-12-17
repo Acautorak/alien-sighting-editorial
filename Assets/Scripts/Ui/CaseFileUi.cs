@@ -34,7 +34,13 @@ public class CaseFileUi : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         NotificationBuss.Subscribe("caseDropped", OnCaseDropped);
 
         SpriteSwap();
+        button.onClick.AddListener(OnButtonClicked);
 
+    }
+
+    private void OnButtonClicked()
+    {
+        NotificationBuss.Publish("onCaseButtonClicked");
     }
     private void OnDestroy()
     {
@@ -67,12 +73,10 @@ public class CaseFileUi : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
         if (rectTransform.anchoredPosition.y > 0 + 100)
         {
-            int i = 0;
             if (image.sprite != upperSprite)
             {
                 image.sprite = upperSprite;
                 rectTransform.localScale = new Vector3(upperScale, upperScale, 1);
-                Debug.LogWarning("Poziv" + i++);
             }
             if (button.interactable) button.interactable = false;
         }
