@@ -1,7 +1,27 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public static class SaveManager
 {
+
+    public static void SaveProgress(int currentCaseIndex, int currentStepIndex)
+    {
+        PlayerPrefs.SetInt("currentCaseIndex", currentCaseIndex);
+        PlayerPrefs.SetInt("currentStepIndex", currentStepIndex);
+        PlayerPrefs.Save();
+    }
+
+    public static int LoadCurrentCaseIdnex()
+    {
+        return PlayerPrefs.GetInt("currentCaseIndex", 0);
+    }
+
+    public static int LoadCurrentStepIndex()
+    {
+        return PlayerPrefs.GetInt("currentStepIndex",0);
+    }
+
+    
     public static void SavePosition(string key, Vector2 position)
     {
         PlayerPrefs.SetFloat(key + "_x", position.x);
