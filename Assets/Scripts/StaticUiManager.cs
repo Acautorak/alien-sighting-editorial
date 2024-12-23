@@ -22,12 +22,12 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
         SetDocumentBelowTheScreen();
         playButton.onClick.AddListener(PlayLevel);
         closeButton.onClick.AddListener(CloseDocument);
-        NotificationBuss.Subscribe("onCaseButtonClicked", MoveDocumentToCenter);
+        NotificationBuss.Subscribe(EventNames.OnCaseButtonClicked, MoveDocumentToCenter);
     }
 
     private void OnDestroy()
     {
-        NotificationBuss.Unsubscribe("onCaseButtonClicked", MoveDocumentToCenter);
+        NotificationBuss.Unsubscribe(EventNames.OnCaseButtonClicked, MoveDocumentToCenter);
     }
     private void SetDocumentBelowTheScreen()
     {

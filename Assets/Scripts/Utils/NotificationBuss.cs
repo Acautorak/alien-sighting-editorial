@@ -6,34 +6,49 @@ using System.Collections.Generic;
 
 public static class NotificationBuss
 {
-    private static readonly Dictionary<string, Action<object>> _eventTable = new Dictionary<string, Action<object>>();
+    private static readonly Dictionary<EventNames, Action<object>> _eventTable = new Dictionary<EventNames, Action<object>>();
 
 
     /// Subscribes to an event with the given event name.
-    public static void Subscribe(string eventName, Action<object> listener)
+    public static void Subscribe(EventNames eventName, Action<object> listener)
     {
-        if (!_eventTable.ContainsKey(eventName))
+        if (_eventTable.TryGetValue(eventName, out Action<object> thisEvent))
         {
-            _eventTable[eventName] = null;
+            thisEvent += listener;
+            _eventTable[eventName] = thisEvent;
         }
-        _eventTable[eventName] += listener;
+        else
+        {
+            thisEvent += listener;
+            _eventTable.Add(eventName, thisEvent);
+        }
     }
 
     /// Unsubscribes from an event with the given event name.
-    public static void Unsubscribe(string eventName, Action<object> listener)
+    public static void Unsubscribe(EventNames eventName, Action<object> listener)
     {
-        if (_eventTable.ContainsKey(eventName))
+        if (_eventTable.TryGetValue(eventName, out Action<object> thisEvent))
         {
-            _eventTable[eventName] -= listener;
+            thisEvent -= listener;
+            _eventTable[eventName] = thisEvent;
         }
     }
 
     /// Publishes an event to all subscribed listeners
-    public static void Publish(string eventName, object parameter = null)
+    public static void Publish(EventNames eventName, object parameter = null)
     {
-        if(_eventTable.ContainsKey(eventName))
+        if (_eventTable.TryGetValue(eventName, out Action<object> thisEvent))
         {
-            _eventTable[eventName]?.Invoke(parameter);
+            thisEvent?.Invoke(parameter);
         }
     }
+}
+
+public enum EventNames
+{
+    OnCaseButtonClicked,
+    OnCasePublished,
+    OnCaseDenied,
+    OnCaseDropped,
+
 }

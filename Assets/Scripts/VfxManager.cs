@@ -9,7 +9,7 @@ public class VfxManager : MonoBehaviour
     [SerializeField] private ParticleSystem denyParticleSystem;
     private void Start()
     {
-        NotificationBuss.Subscribe("caseDropped", OnCaseDropped);
+        NotificationBuss.Subscribe(EventNames.OnCaseDropped, OnCaseDropped);
         publishParticleSystem.Stop();
     }
 

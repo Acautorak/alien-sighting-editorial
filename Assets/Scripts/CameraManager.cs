@@ -13,7 +13,7 @@ public class CameraManager : MonoSingleton<CameraManager>
 
     private void Start()
     {
-        NotificationBuss.Subscribe("caseDropped", OnCaseDropped);
+        NotificationBuss.Subscribe(EventNames.OnCaseDropped, OnCaseDropped);
         if(targetCamera != null)
         {
             originalPosition = targetCamera.transform.position;

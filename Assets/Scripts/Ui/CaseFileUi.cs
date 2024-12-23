@@ -31,7 +31,7 @@ public class CaseFileUi : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     private void Start()
     {
-        NotificationBuss.Subscribe("caseDropped", OnCaseDropped);
+        NotificationBuss.Subscribe(EventNames.OnCaseDropped, OnCaseDropped);
 
         SpriteSwap();
         button.onClick.AddListener(OnButtonClicked);
@@ -40,11 +40,11 @@ public class CaseFileUi : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     private void OnButtonClicked()
     {
-        NotificationBuss.Publish("onCaseButtonClicked");
+        NotificationBuss.Publish(EventNames.OnCaseButtonClicked);
     }
     private void OnDestroy()
     {
-        NotificationBuss.Unsubscribe("caseDropped", OnCaseDropped);
+        NotificationBuss.Unsubscribe(EventNames.OnCaseDropped, OnCaseDropped);
     }
 
     private void OnCaseDropped(object obj)

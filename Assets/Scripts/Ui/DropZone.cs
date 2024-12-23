@@ -12,7 +12,7 @@ public class DropZone : MonoBehaviour, IDropHandler
             RectTransform droppedRectTransform = droppedObject.GetComponent<RectTransform>();
             droppedRectTransform.SetParent(transform);
             droppedRectTransform.anchoredPosition = Vector2.zero;
-            NotificationBuss.Publish("caseDropped", isLeft);
+            NotificationBuss.Publish(EventNames.OnCaseDropped, isLeft);
         }
     }
 
