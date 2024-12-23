@@ -35,4 +35,11 @@ public static class SaveManager
         float y = PlayerPrefs.GetFloat(key + "_y");
         return new Vector2(x, y);
     }
+
+    public static void SaveCompletedCases(List<int> completedCases)
+    {
+        string completedCasesString = string.Join(",", completedCases);
+        PlayerPrefs.SetString("completedCases", completedCasesString);
+        PlayerPrefs.Save();
+    }
 }
