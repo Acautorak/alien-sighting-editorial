@@ -11,6 +11,7 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
     [SerializeField] private Image blurryBackgroundImage;
     [SerializeField] private Image backGroundImage;
     [SerializeField] private Canvas thisCanvas;
+    [SerializeField] private RectTransform content;
 
 
     [Header("Properties")]
@@ -92,6 +93,13 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
         .setEase(LeanTweenType.easeInOutQuad);
     }
 
+    private void SetupSteps()
+    {
+        foreach (Transform child in content)
+        {
+            
+        }
+    }
 
 
 

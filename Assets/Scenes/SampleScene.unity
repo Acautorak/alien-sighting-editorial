@@ -1579,7 +1579,7 @@ MonoBehaviour:
   m_text: "A hastily scribbled note lies taped to the office fridge, its edges curling
     from humidity. \nThe words are scrawled in red marker, almost aggressive in tone:
     \n\nThe initials \u201CM.L.\u201D are signed angrily at the bottom, as if written
-    with excessive force."
+    with excessive force.."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0244b17522695a742bec7f4bc26502b0, type: 2}
   m_sharedMaterial: {fileID: 8495973098370353138, guid: 0244b17522695a742bec7f4bc26502b0, type: 2}
@@ -1671,6 +1671,7 @@ GameObject:
   - component: {fileID: 838464652}
   - component: {fileID: 838464653}
   - component: {fileID: 838464654}
+  - component: {fileID: 838464655}
   m_Layer: 0
   m_Name: GameManagers
   m_TagString: Untagged
@@ -1762,6 +1763,20 @@ MonoBehaviour:
   backGroundImage: {fileID: 2131431501}
   thisCanvas: {fileID: 1699999874}
   moveDuration: 1
+--- !u!114 &838464655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838464649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 358469e54d8790b42a62ac05b38ac425, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dontDestroyOnLoad: 0
+  caseFolder: Cases
 --- !u!1 &856871428
 GameObject:
   m_ObjectHideFlags: 0
