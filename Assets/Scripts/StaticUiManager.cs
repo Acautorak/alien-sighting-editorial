@@ -97,7 +97,7 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
     {
         foreach (Transform child in content)
         {
-            
+             
         }
     }
 
