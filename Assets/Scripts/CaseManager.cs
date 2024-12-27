@@ -9,6 +9,7 @@ public class CaseManager : MonoSingleton<CaseManager>
     [SerializeField] private List<CaseFileScriptableObject> unsolvedCaseFiles = new List<CaseFileScriptableObject>();
     [SerializeField] private List<int> completedCases;
     [SerializeField] private CaseFileScriptableObject currentCase;
+    
 
     private void Start()
     {

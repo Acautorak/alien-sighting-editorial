@@ -1762,6 +1762,7 @@ MonoBehaviour:
   blurryBackgroundImage: {fileID: 1162784296}
   backGroundImage: {fileID: 2131431501}
   thisCanvas: {fileID: 1699999874}
+  content: {fileID: 0}
   moveDuration: 1
 --- !u!114 &838464655
 MonoBehaviour:
@@ -1776,7 +1777,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dontDestroyOnLoad: 0
-  caseFolder: Cases
+  caseFileFolder: Cases
+  allCaseFiles: []
+  unsolvedCaseFiles: []
+  completedCases: 
+  currentCase: {fileID: 0}
 --- !u!1 &856871428
 GameObject:
   m_ObjectHideFlags: 0
