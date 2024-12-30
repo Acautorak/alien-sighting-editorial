@@ -36,7 +36,6 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
         bigDocumentCanvasGroup.interactable = false;
         bigDocumentCanvasGroup.blocksRaycasts = false;
         thisCanvas.enabled = false;
-
     }
 
     private void MakeInteractable()
