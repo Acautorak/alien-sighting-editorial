@@ -38,7 +38,7 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
         thisCanvas.enabled = false;
     }
 
-    
+    // guess its wednesday my dudes
     private void MakeInteractable()
     {
         thisCanvas.enabled = true;
