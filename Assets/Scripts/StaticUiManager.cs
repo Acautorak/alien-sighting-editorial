@@ -17,7 +17,6 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
     [Header("Properties")]
     [SerializeField] private float moveDuration = 1f;
 
-
     private void Start()
     {
         SetDocumentBelowTheScreen();
