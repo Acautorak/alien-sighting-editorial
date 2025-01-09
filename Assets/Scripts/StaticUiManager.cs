@@ -12,6 +12,8 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
     [SerializeField] private Image backGroundImage;
     [SerializeField] private Canvas thisCanvas;
     [SerializeField] private RectTransform content;
+    [SerializeField] private ObjectPool stepPool;
+    [SerializeField] private Scrollbar scrollbar;
 
 
     [Header("Properties")]
