@@ -1,5 +1,9 @@
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using UnityEngine.Rendering;
 
 public class StaticUiManager : MonoSingleton<StaticUiManager>
 {
@@ -19,17 +23,134 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
     [Header("Properties")]
     [SerializeField] private float moveDuration = 1f;
 
+    private int unlockedSteps;
+    private int currentCaseIndex;
+    private List<int> completedCaseFiles;
+    private CaseFileScriptableObject currentCaseFile;
+
+
+
     private void Start()
     {
         SetDocumentBelowTheScreen();
         playButton.onClick.AddListener(PlayLevel);
         closeButton.onClick.AddListener(CloseDocument);
         NotificationBuss.Subscribe(EventNames.OnCaseButtonClicked, MoveDocumentToCenter);
+
+        LoadProgress();
     }
 
     private void OnDestroy()
     {
         NotificationBuss.Unsubscribe(EventNames.OnCaseButtonClicked, MoveDocumentToCenter);
+    }
+
+    private void LoadProgress()
+    {
+        currentCaseIndex = SaveManager.LoadCurrentCaseIdnex();
+        unlockedSteps = SaveManager.LoadCurrentStepIndex() + 1;
+        completedCaseFiles = SaveManager.LoadCompletedCases();
+    }
+
+    private void SaveProgress()
+    {
+        SaveManager.SaveProgress(currentCaseIndex, unlockedSteps - 1);
+        SaveManager.SaveCompletedCases(completedCaseFiles);
+    }
+
+    public void LoadCase(CaseFileScriptableObject caseFile)
+    {
+        currentCaseFile = caseFile;
+        SetupSteps();
+        SetupScrollbar();
+    }
+
+    private void SetupSteps()
+    {
+        // clear past steps
+        foreach (Transform child in content)
+        {
+            stepPool.ReturnPooledObject(child.gameObject);
+        }
+
+        // dodaj nove
+        foreach (var stepData in currentCaseFile.steps)
+        {
+            AddStep(stepData.clueText, stepData.clueImage);
+        }
+    }
+
+    public void AddStep(string clueText, Sprite clueImage)
+    {
+        GameObject newStep = stepPool.GetPooledObject();
+        newStep.transform.SetParent(content, false);
+        newStep.SetActive(true);
+
+        if (clueText != null)
+        {
+            TextMeshProUGUI textComponent = newStep.GetComponentInChildren<TextMeshProUGUI>();
+            textComponent.text = clueText;
+        }
+
+        if (clueImage != null)
+        {
+            Image imageComponent = newStep.GetComponentInChildren<Image>();
+            imageComponent.sprite = clueImage;
+        }
+
+        // Deactivate step if not unlocked
+        if (unlockedSteps <= content.childCount - 1)
+        {
+            newStep.SetActive(false);
+        }
+    }
+
+    public void UnlockNextStep()
+    {
+        if (unlockedSteps < content.childCount)
+        {
+            GameObject nextStep = content.GetChild(unlockedSteps).gameObject;
+            nextStep.SetActive(true);
+            CanvasGroup canvasGroup = nextStep.GetComponent<CanvasGroup>();
+            if(canvasGroup != null)
+            {
+                LeanTween.alphaCanvas(canvasGroup, 1f, 1f);
+            }
+            unlockedSteps++;
+            SaveProgress();
+            SetupScrollbar();
+        }
+    }
+
+    public void MarkCaseAsCompleted()
+    {
+        if(!completedCaseFiles.Contains(currentCaseIndex))
+        {
+            completedCaseFiles.Add(currentCaseIndex);
+            SaveProgress();
+        }
+    }
+
+    public void RestartGame()
+    {
+        SaveManager.ClearProgress();
+
+        unlockedSteps = 1;
+        completedCaseFiles.Clear();
+
+        foreach(Transform child in content)
+        {
+            stepPool.ReturnPooledObject(child.gameObject);
+        }
+
+        SetupSteps();
+        SetupScrollbar();
+    }
+
+    private void SetupScrollbar()
+    {
+        float totoalHeight = unlockedSteps * stepPool.GetObjectPrefab().GetComponent<RectTransform>().sizeDelta.y;
+        
     }
     private void SetDocumentBelowTheScreen()
     {
@@ -92,13 +213,5 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
     {
         LeanTween.value(gameObject, UpdateAlpha, 0f, 1f, moveDuration)
         .setEase(LeanTweenType.easeInOutQuad);
-    }
-
-    private void SetupSteps()
-    {
-        foreach (Transform child in content)
-        {
-             
-        }
     }
 }

@@ -42,4 +42,9 @@ public class ObjectPool : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
+    public GameObject GetObjectPrefab()
+    {
+        return objectPrefab;
+    }
 }
