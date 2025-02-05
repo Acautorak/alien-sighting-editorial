@@ -150,6 +150,11 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
     private void SetupScrollbar()
     {
         float totoalHeight = unlockedSteps * stepPool.GetObjectPrefab().GetComponent<RectTransform>().sizeDelta.y;
+        content.sizeDelta = new Vector2(content.sizeDelta.x, totoalHeight);
+
+        scrollbar.numberOfSteps = unlockedSteps;
+        scrollbar.size = 1f/ unlockedSteps;
+        scrollbar.value = 0f;
         
     }
     private void SetDocumentBelowTheScreen()
@@ -160,7 +165,7 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
         thisCanvas.enabled = false;
     }
 
-    // guess its wednesday my dudes
+    // guess its wednesday
     private void MakeInteractable()
     {
         thisCanvas.enabled = true;
@@ -180,6 +185,7 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
     private void PlayLevel()
     {
         Debug.Log("pritiso sam play");
+        UnlockNextStep();
     }
 
     private void CloseDocument()
