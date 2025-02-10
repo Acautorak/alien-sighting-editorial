@@ -86,17 +86,8 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
         newStep.transform.SetParent(content, false);
         newStep.SetActive(true);
 
-        if (clueText != null)
-        {
-            TextMeshProUGUI textComponent = newStep.GetComponentInChildren<TextMeshProUGUI>();
-            textComponent.text = clueText;
-        }
-
-        if (clueImage != null)
-        {
-            Image imageComponent = newStep.GetComponentInChildren<Image>();
-            imageComponent.sprite = clueImage;
-        }
+        StepContent stepContent = newStep.GetComponent<StepContent>();
+        stepContent.Setup(clueText, clueImage);
 
         // Deactivate step if not unlocked
         if (unlockedSteps <= content.childCount - 1)
@@ -112,7 +103,7 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
             GameObject nextStep = content.GetChild(unlockedSteps).gameObject;
             nextStep.SetActive(true);
             CanvasGroup canvasGroup = nextStep.GetComponent<CanvasGroup>();
-            if(canvasGroup != null)
+            if (canvasGroup != null)
             {
                 LeanTween.alphaCanvas(canvasGroup, 1f, 1f);
             }
@@ -124,7 +115,7 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
 
     public void MarkCaseAsCompleted()
     {
-        if(!completedCaseFiles.Contains(currentCaseIndex))
+        if (!completedCaseFiles.Contains(currentCaseIndex))
         {
             completedCaseFiles.Add(currentCaseIndex);
             SaveProgress();
@@ -138,7 +129,7 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
         unlockedSteps = 1;
         completedCaseFiles.Clear();
 
-        foreach(Transform child in content)
+        foreach (Transform child in content)
         {
             stepPool.ReturnPooledObject(child.gameObject);
         }
@@ -153,9 +144,9 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
         content.sizeDelta = new Vector2(content.sizeDelta.x, totoalHeight);
 
         scrollbar.numberOfSteps = unlockedSteps;
-        scrollbar.size = 1f/ unlockedSteps;
+        scrollbar.size = 1f / unlockedSteps;
         scrollbar.value = 0f;
-        
+
     }
     private void SetDocumentBelowTheScreen()
     {
