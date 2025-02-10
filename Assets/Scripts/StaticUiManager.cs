@@ -67,7 +67,7 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
 
     private void SetupSteps()
     {
-        // clear past steps 
+        // clear past steps
         foreach (Transform child in content)
         {
             stepPool.ReturnPooledObject(child.gameObject);
