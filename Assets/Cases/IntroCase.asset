@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: IntroCase
   m_EditorClassIdentifier: 
   steps:
-  - clueText: 
+  - clueText: "A hastily scribbled note lies taped to the office fridge, its edges
+      curling from humidity.  The words are scrawled in red marker, almost aggressive
+      in tone:   The initials \u201CM.L.\u201D are signed angrily at the bottom,
+      as if written with excessive force.."
     clueImage: {fileID: 0}
   - clueText: 
     clueImage: {fileID: 0}
