@@ -15,6 +15,7 @@ public class CaseManager : MonoSingleton<CaseManager>
     {
         LoadAllCaseFiles();
         LoadProgress();
+        AssignNewCase();
     }
 
     private void LoadAllCaseFiles()
