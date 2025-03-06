@@ -67,6 +67,11 @@ public class CaseManager : MonoSingleton<CaseManager>
         }
     }
 
+    public CaseFileScriptableObject GetCurrentCaseFile()
+    {
+        return currentCase;
+    }
+
 
 
 }

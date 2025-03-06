@@ -9,9 +9,6 @@ public class StepContent : MonoBehaviour
 
     public void Setup(string text, Sprite sprite)
     {
-        
-        gameObject.SetActive(true);
-
 
         if (string.IsNullOrEmpty(text))
         {

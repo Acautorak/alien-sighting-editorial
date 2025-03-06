@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Rendering;
+using System.Linq;
 
 public class StaticUiManager : MonoSingleton<StaticUiManager>
 {
@@ -26,7 +27,7 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
     private int unlockedSteps;
     private int currentCaseIndex;
     private List<int> completedCaseFiles;
-    private CaseFileScriptableObject currentCaseFile;
+    [SerializeField] private CaseFileScriptableObject currentCaseFile;
 
 
 
@@ -50,6 +51,8 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
         currentCaseIndex = SaveManager.LoadCurrentCaseIdnex();
         unlockedSteps = SaveManager.LoadCurrentStepIndex() + 1;
         completedCaseFiles = SaveManager.LoadCompletedCases();
+
+        LoadCase(CaseManager.Instance.GetCurrentCaseFile());
     }
 
     private void SaveProgress()
@@ -61,30 +64,43 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
     public void LoadCase(CaseFileScriptableObject caseFile)
     {
         currentCaseFile = caseFile;
+        ClearPastSteps();
+        AddAllSteps();
         SetupSteps();
         SetupScrollbar();
     }
 
-    private void SetupSteps()
+    private void ClearPastSteps()
     {
         // clear past steps
         foreach (Transform child in content)
         {
             stepPool.ReturnPooledObject(child.gameObject);
         }
-
+    }
+    private void SetupSteps()
+    {
+        Debug.LogWarning(currentCaseFile.steps.ToString());
         // dodaj nove
         foreach (var stepData in currentCaseFile.steps)
         {
+            Debug.Log("AddStepindex");
             AddStep(stepData.clueText, stepData.clueImage);
         }
     }
 
+
+    private void AddAllSteps()
+    {
+        foreach (GameObject go in stepPool.GetPool())
+        {
+            go.transform.SetParent(content, false);
+        }
+    }
     public void AddStep(string clueText, Sprite clueImage)
     {
         GameObject newStep = stepPool.GetPooledObject();
         newStep.transform.SetParent(content, false);
-        newStep.SetActive(true);
 
         StepContent stepContent = newStep.GetComponent<StepContent>();
         stepContent.Setup(clueText, clueImage);
@@ -98,8 +114,11 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
 
     public void UnlockNextStep()
     {
+        Debug.Log("PreUnlockNextSteps");
+        Debug.Log(content.childCount);
         if (unlockedSteps < content.childCount)
         {
+            Debug.Log("UnlockNextStep");
             GameObject nextStep = content.GetChild(unlockedSteps).gameObject;
             nextStep.SetActive(true);
             CanvasGroup canvasGroup = nextStep.GetComponent<CanvasGroup>();
@@ -107,7 +126,6 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
             {
                 LeanTween.alphaCanvas(canvasGroup, 1f, 1f);
             }
-            unlockedSteps++;
             SaveProgress();
             SetupScrollbar();
         }
@@ -134,7 +152,7 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
             stepPool.ReturnPooledObject(child.gameObject);
         }
 
-        SetupSteps();
+        ClearPastSteps();
         SetupScrollbar();
     }
 
@@ -156,7 +174,6 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
         thisCanvas.enabled = false;
     }
 
-    // guess its wednesday
     private void MakeInteractable()
     {
         thisCanvas.enabled = true;

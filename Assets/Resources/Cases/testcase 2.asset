@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1767b55566931634490da809105fa123, type: 3}
+  m_Name: testcase 2
+  m_EditorClassIdentifier: 
+  steps:
+  - clueText: "A hastily scribbled note lies taped to the office fridge, its edges
+      curling from humidity.  The words are scrawled in red marker, almost aggressive
+      in tone:   The initials \u201CM.L.\u201D are signed angrily at the bottom,
+      as if written with excessive force.."
+    clueImage: {fileID: 0}
+  - clueText: sadsadsa
+    clueImage: {fileID: 0}
+  - clueText: adaafwafwfasfas fsafsfs
+    clueImage: {fileID: 0}
+  - clueText: 
+    clueImage: {fileID: 0}
+  - clueText: sadaw dawf asd sad aw
+    clueImage: {fileID: 0}
+  - clueText: 'sadawda '
+    clueImage: {fileID: 0}
+  - clueText: fsafsdwa
+    clueImage: {fileID: 0}
+  - clueText: 'sadawadw aw '
+    clueImage: {fileID: 0}

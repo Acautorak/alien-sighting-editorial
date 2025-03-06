@@ -11,5 +11,5 @@ public class StepData
 [CreateAssetMenu(fileName = "NewCaseFile", menuName = "Scriptable Objects/CaseFileScriptableObject")]
 public class CaseFileScriptableObject : ScriptableObject
 {
-    public StepData[] steps = new StepData[8];
+    [SerializeField] public StepData[] steps = new StepData[8];
 }

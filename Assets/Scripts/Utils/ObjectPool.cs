@@ -47,4 +47,9 @@ public class ObjectPool : MonoBehaviour
     {
         return objectPrefab;
     }
+
+    public List<GameObject> GetPool()
+    {
+        return pool;
+    }
 }

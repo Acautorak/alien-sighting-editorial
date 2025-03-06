@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1767b55566931634490da809105fa123, type: 3}
-  m_Name: IntroCase
+  m_Name: testcase
   m_EditorClassIdentifier: 
   steps:
   - clueText: "A hastily scribbled note lies taped to the office fridge, its edges
@@ -18,17 +18,17 @@ MonoBehaviour:
       in tone:   The initials \u201CM.L.\u201D are signed angrily at the bottom,
       as if written with excessive force.."
     clueImage: {fileID: 0}
-  - clueText: 
+  - clueText: sadsadsa
+    clueImage: {fileID: 0}
+  - clueText: adaafwafwfasfas fsafsfs
     clueImage: {fileID: 0}
   - clueText: 
     clueImage: {fileID: 0}
-  - clueText: 
+  - clueText: sadaw dawf asd sad aw
     clueImage: {fileID: 0}
-  - clueText: 
+  - clueText: 'sadawda '
     clueImage: {fileID: 0}
-  - clueText: 
+  - clueText: fsafsdwa
     clueImage: {fileID: 0}
-  - clueText: 
-    clueImage: {fileID: 0}
-  - clueText: 
+  - clueText: 'sadawadw aw '
     clueImage: {fileID: 0}
