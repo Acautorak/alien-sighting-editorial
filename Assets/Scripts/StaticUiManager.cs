@@ -105,7 +105,7 @@ public class StaticUiManager : MonoSingleton<StaticUiManager>
         StepContent stepContent = newStep.GetComponent<StepContent>();
         stepContent.Setup(clueText, clueImage);
 
-        // Deactivate step if not unlocked
+        // Deactivate step if not unlocked 
         if (unlockedSteps <= content.childCount - 1)
         {
             newStep.SetActive(false);
