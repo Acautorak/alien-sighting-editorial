@@ -2,6 +2,14 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+public enum SlotMachineState
+{
+    Idle,
+    Spinning,
+    Stopping,
+    Landing
+}
+
 public class SlotMachine : MonoBehaviour
 {
     public List<SlotReel> reels;
@@ -9,15 +17,18 @@ public class SlotMachine : MonoBehaviour
     public float spinDuration = 2.0f;
 
     private Coroutine spinCoroutine;
+    public SlotMachineState State { get; private set; } = SlotMachineState.Idle;
+
     private bool isSpinning = false;
 
     public void StartSpin()
     {
-        isSpinning = true;
+        if (State != SlotMachineState.Idle) return;
+        State = SlotMachineState.Spinning;
         for (int i = 0; i < reels.Count; i++)
         {
             float delay = i * 0.3f;
-            reels[i].StartSpin(symbolPrefabs, spinDuration + delay);
+            reels[i].StartSpin(symbolPrefabs, spinDuration + delay, this);
         }
 
         if (spinCoroutine != null)
@@ -39,15 +50,15 @@ public class SlotMachine : MonoBehaviour
 
     public void Slam()
     {
+        if (State != SlotMachineState.Spinning) return;
+        State = SlotMachineState.Stopping;
         if (spinCoroutine != null)
             StopCoroutine(spinCoroutine);
 
-        isSpinning = false;
         foreach (var reel in reels)
         {
-            reel.ForceStop(symbolPrefabs); // You need to implement this in SlotReel
+            reel.ForceStop(symbolPrefabs);
         }
-        EvaluateWin();
     }
 
     void EvaluateWin()
@@ -109,6 +120,12 @@ public class SlotMachine : MonoBehaviour
         return reels.Count >= 3;
     }
 
+    public void OnAllReelsLanded()
+{
+    State = SlotMachineState.Idle;
+    EvaluateWin();
+}
+
     List<string> GetCenterRowSymbols()
     {
         List<string> symbols = new List<string>();
@@ -128,17 +145,13 @@ public class SlotMachine : MonoBehaviour
     }
 
     void Update()
+{
+    if (Input.GetKeyDown(KeyCode.Space))
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (!isSpinning)
-            {
-                StartSpin();
-            }
-            else
-            {
-                Slam();
-            }
-        }
+        if (State == SlotMachineState.Idle)
+            StartSpin();
+        else if (State == SlotMachineState.Spinning)
+            Slam();
     }
+}
 }

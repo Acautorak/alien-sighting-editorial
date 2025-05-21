@@ -20,6 +20,8 @@ public class SlotReel : MonoBehaviour
 
     public List<string> finalSymbols = new(); // Used by SlotMachine
 
+    private SlotMachine slotMachine;
+
     // Slot machine state
     public SlotMachineState State { get; private set; } = SlotMachineState.Idle;
 
@@ -99,48 +101,7 @@ public class SlotReel : MonoBehaviour
             .setOnComplete(() =>
             {
                 // Align phase: gently bounce symbols into place
-                for (int i = 0; i < currentSymbols.Count; i++)
-                {
-                    float targetY = i * symbolHeight;
-                    float overshootY = targetY - symbolHeight * 0.25f; // Drop below the line
-
-                    if (i == currentSymbols.Count - 1)
-                    {
-                        LeanTween.moveLocalY(currentSymbols[i], overshootY, 0.18f)
-                            .setEase(LeanTweenType.easeInQuad)
-                            .setOnComplete(() =>
-                            {
-                                LeanTween.moveLocalY(currentSymbols[i], targetY, 0.22f)
-                                    .setEase(LeanTweenType.easeOutBack)
-                                    .setOnComplete(() =>
-                                    {
-                                        finalSymbols.Clear();
-                                        for (int j = 0; j < visibleSymbols; j++)
-                                        {
-                                            if (j < currentSymbols.Count)
-                                            {
-                                                Symbol symbolTag = currentSymbols[j].GetComponent<Symbol>();
-                                                finalSymbols.Add(symbolTag.symbolName);
-                                            }
-                                        }
-                                        PlayStopEffect();
-                                        State = SlotMachineState.Idle;
-                                        isSpinning = false;
-                                        isStopping = false;
-                                    });
-                            });
-                    }
-                    else
-                    {
-                        LeanTween.moveLocalY(currentSymbols[i], overshootY, 0.18f)
-                            .setEase(LeanTweenType.easeInQuad)
-                            .setOnComplete(() =>
-                            {
-                                LeanTween.moveLocalY(currentSymbols[i], targetY, 0.22f)
-                                    .setEase(LeanTweenType.easeOutBack);
-                            });
-                    }
-                }
+                AlignSymbolsWithDropAndRise();
             });
     }
 
@@ -150,21 +111,24 @@ public class SlotReel : MonoBehaviour
         isSpinning = false;
         isStopping = true;
 
-        int lastIndex = currentSymbols.Count - 1;
-        for (int i = 0; i < currentSymbols.Count; i++)
+        int finished = 0;
+        int symbolCount = currentSymbols.Count;
+
+        for (int i = 0; i < symbolCount; i++)
         {
             float targetY = i * symbolHeight;
             float overshootY = targetY - symbolHeight * 0.25f; // Drop below the line
 
-            if (i == lastIndex)
-            {
-                LeanTween.moveLocalY(currentSymbols[i], overshootY, 0.18f)
-                    .setEase(LeanTweenType.easeInQuad)
-                    .setOnComplete(() =>
-                    {
-                        LeanTween.moveLocalY(currentSymbols[i], targetY, 0.22f)
-                            .setEase(LeanTweenType.easeOutBack)
-                            .setOnComplete(() =>
+            LeanTween.moveLocalY(currentSymbols[i], overshootY, 0.18f)
+                .setEase(LeanTweenType.easeInQuad)
+                .setOnComplete(() =>
+                {
+                    LeanTween.moveLocalY(currentSymbols[i], targetY, 0.22f)
+                        .setEase(LeanTweenType.easeOutBack)
+                        .setOnComplete(() =>
+                        {
+                            finished++;
+                            if (finished == symbolCount)
                             {
                                 finalSymbols.Clear();
                                 for (int j = 0; j < visibleSymbols; j++)
@@ -177,17 +141,24 @@ public class SlotReel : MonoBehaviour
                                 }
                                 PlayStopEffect();
                                 isStopping = false;
-                            });
-                    });
-            }
-            else
-            {
-                LeanTween.moveLocalY(currentSymbols[i], overshootY, 0.18f).setEase(LeanTweenType.easeInQuad)
-                    .setOnComplete(() =>
-                    {
-                        LeanTween.moveLocalY(currentSymbols[i], targetY, 0.22f).setEase(LeanTweenType.easeOutBack);
-                    });
-            }
+                                // Notify SlotMachine if needed
+                                if (slotMachine != null)
+                                {
+                                    bool allIdle = true;
+                                    foreach (var reel in slotMachine.reels)
+                                    {
+                                        if (reel.State != SlotMachineState.Idle)
+                                        {
+                                            allIdle = false;
+                                            break;
+                                        }
+                                    }
+                                    if (allIdle)
+                                        slotMachine.OnAllReelsLanded();
+                                }
+                            }
+                        });
+                });
         }
     }
 
@@ -220,12 +191,33 @@ public class SlotReel : MonoBehaviour
     }
 
     // When starting a spin
-    public void StartSpin()
+    public void StartSpin(List<GameObject> prefabPool, float duration, SlotMachine machine)
     {
+        slotMachine = machine;
         if (State != SlotMachineState.Idle) return;
         State = SlotMachineState.Spinning;
         isSpinning = true;
-        // ...rest of your spin logic...
+        isStopping = false;
+        PlaySpinSound();
+
+        // If first spin, fill up the reel
+        if (currentSymbols.Count == 0)
+        {
+            for (int i = 0; i < visibleSymbols + 2; i++)
+            {
+                GameObject symbol = CreateNewSymbol(prefabPool, i * symbolHeight);
+                currentSymbols.Add(symbol);
+            }
+        }
+
+        // Animate all symbols moving down for the duration
+        LeanTween.value(gameObject, 0f, duration, duration)
+            .setOnUpdate((float t) =>
+            {
+                float delta = Time.deltaTime;
+                MoveSymbols(prefabPool, speed * delta);
+            })
+            .setOnComplete(() => StopSpinWithTween(prefabPool));
     }
 
     // When slamming
@@ -241,24 +233,73 @@ public class SlotReel : MonoBehaviour
     {
         State = SlotMachineState.Idle;
         isSpinning = false;
-       
+
     }
 
-    void Update()
+    void AlignSymbolsWithDropAndRise()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        for (int i = 0; i < currentSymbols.Count; i++)
         {
-            if (State == SlotMachineState.Idle)
-                StartSpin();
-            else if (State == SlotMachineState.Spinning)
-                Slam();
+            float targetY = i * symbolHeight;
+            float overshootY = targetY - symbolHeight * 0.25f; // Drop below the line
+
+            if (i == currentSymbols.Count - 1)
+            {
+                LeanTween.moveLocalY(currentSymbols[i], overshootY, 0.22f)
+                    .setEase(LeanTweenType.easeInCubic)
+                    .setOnComplete(() =>
+                    {
+                        LeanTween.moveLocalY(currentSymbols[i], targetY, 0.28f)
+                            .setEase(LeanTweenType.easeOutElastic)
+                            .setOnComplete(() =>
+                            {
+                                FinalizeLanding();
+                            });
+                    });
+            }
+            else
+            {
+                LeanTween.moveLocalY(currentSymbols[i], overshootY, 0.22f)
+                    .setEase(LeanTweenType.easeInCubic)
+                    .setOnComplete(() =>
+                    {
+                        LeanTween.moveLocalY(currentSymbols[i], targetY, 0.28f)
+                            .setEase(LeanTweenType.easeOutElastic);
+                    });
+            }
         }
     }
-}
 
-public enum SlotMachineState
-{
-    Idle,
-    Spinning,
-    Stopping
+    void FinalizeLanding()
+    {
+        finalSymbols.Clear();
+        for (int j = 0; j < visibleSymbols; j++)
+        {
+            if (j < currentSymbols.Count)
+            {
+                Symbol symbolTag = currentSymbols[j].GetComponent<Symbol>();
+                finalSymbols.Add(symbolTag.symbolName);
+            }
+        }
+        PlayStopEffect();
+        State = SlotMachineState.Idle;
+        isSpinning = false;
+        isStopping = false;
+
+        // Notify SlotMachine if all reels are done
+        if (slotMachine != null)
+        {
+            bool allIdle = true;
+            foreach (var reel in slotMachine.reels)
+            {
+                if (reel.State != SlotMachineState.Idle)
+                {
+                    allIdle = false;
+                    break;
+                }
+            }
+            if (allIdle)
+                slotMachine.OnAllReelsLanded();
+        }
+    }
 }
