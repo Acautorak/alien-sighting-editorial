@@ -146,6 +146,7 @@ public class SlotMachine : MonoBehaviour
 
     void Update()
 {
+    
     if (Input.GetKeyDown(KeyCode.Space))
     {
         if (State == SlotMachineState.Idle)
