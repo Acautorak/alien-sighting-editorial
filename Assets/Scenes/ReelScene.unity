@@ -339,12 +339,12 @@ MonoBehaviour:
   - {fileID: 1933214598}
   - {fileID: 1136100259}
   symbolPrefabs:
-  - {fileID: 7638680883953110415, guid: 57481cdb33bdfc747aa03add1a0b7ff7, type: 3}
-  - {fileID: 7038682759399129870, guid: 0b1b32d8013c2f341a0dd8302845f2a9, type: 3}
-  - {fileID: 6017640124265469407, guid: b11c7a8247db2444f8b1e95c1ebcab44, type: 3}
-  - {fileID: 2723817616824962951, guid: 24c92e4f470c7fa4a88fb6e218a46a0c, type: 3}
-  - {fileID: 342502659491097930, guid: faf64b13670a2d0449f7ac4f2b56fa7b, type: 3}
-  spinDuration: 1.5
+  - {fileID: 4549710149062776080}
+  - {fileID: 3119990907716109086}
+  - {fileID: 3799270181720381688}
+  - {fileID: 1576478966069554651}
+  - {fileID: 4659346824899169961}
+  spinDuration: 4
 --- !u!4 &911790590
 Transform:
   m_ObjectHideFlags: 0
@@ -407,8 +407,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   symbolHeight: 3.5
-  visibleSymbols: 3
-  speed: 10
+  visibleSymbols: 4
+  speed: 30
   easeCurve:
     serializedVersion: 2
     m_Curve:
@@ -629,8 +629,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   symbolHeight: 3.5
-  visibleSymbols: 3
-  speed: 10
+  visibleSymbols: 4
+  speed: 20
   easeCurve:
     serializedVersion: 2
     m_Curve:
@@ -685,7 +685,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1689314015
 Transform:
   m_ObjectHideFlags: 0
@@ -756,8 +756,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   symbolHeight: 3.5
-  visibleSymbols: 3
-  speed: 10
+  visibleSymbols: 4
+  speed: 25
   easeCurve:
     serializedVersion: 2
     m_Curve:
@@ -854,6 +854,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24c92e4f470c7fa4a88fb6e218a46a0c, type: 3}
+--- !u!1 &1576478966069554651 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2723817616824962951, guid: 24c92e4f470c7fa4a88fb6e218a46a0c, type: 3}
+  m_PrefabInstance: {fileID: 1576478966069554650}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3119990907716109085
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -911,6 +916,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b1b32d8013c2f341a0dd8302845f2a9, type: 3}
+--- !u!1 &3119990907716109086 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7038682759399129870, guid: 0b1b32d8013c2f341a0dd8302845f2a9, type: 3}
+  m_PrefabInstance: {fileID: 3119990907716109085}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3799270181720381687
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -968,6 +978,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b11c7a8247db2444f8b1e95c1ebcab44, type: 3}
+--- !u!1 &3799270181720381688 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6017640124265469407, guid: b11c7a8247db2444f8b1e95c1ebcab44, type: 3}
+  m_PrefabInstance: {fileID: 3799270181720381687}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4549710149062776079
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1025,6 +1040,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57481cdb33bdfc747aa03add1a0b7ff7, type: 3}
+--- !u!1 &4549710149062776080 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7638680883953110415, guid: 57481cdb33bdfc747aa03add1a0b7ff7, type: 3}
+  m_PrefabInstance: {fileID: 4549710149062776079}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4659346824899169960
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1082,6 +1102,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: faf64b13670a2d0449f7ac4f2b56fa7b, type: 3}
+--- !u!1 &4659346824899169961 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 342502659491097930, guid: faf64b13670a2d0449f7ac4f2b56fa7b, type: 3}
+  m_PrefabInstance: {fileID: 4659346824899169960}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

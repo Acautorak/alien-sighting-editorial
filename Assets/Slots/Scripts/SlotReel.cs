@@ -47,7 +47,7 @@ public class SlotReel : MonoBehaviour
         // If first spin, fill up the reel
         if (currentSymbols.Count == 0)
         {
-            for (int i = 0; i < visibleSymbols + 2; i++)
+            for (int i = 0; i < visibleSymbols; i++)
             {
                 GameObject symbol = CreateNewSymbol(prefabPool, i * symbolHeight);
                 currentSymbols.Add(symbol);
@@ -102,12 +102,28 @@ public class SlotReel : MonoBehaviour
 
     private void RecycleSymbolsIfNeeded(List<GameObject> prefabPool)
     {
-        // If the bottom symbol is out of view, recycle it to the top
-        while (currentSymbols.Count > 0 && 
+        while (currentSymbols.Count > 0 &&
                currentSymbols[currentSymbols.Count - 1].transform.localPosition.y + symbolContainer.localPosition.y < -symbolHeight)
         {
             var bottom = currentSymbols[currentSymbols.Count - 1];
-            pool.Return(bottom);
+
+            // Fire OFFREEL event
+            var symbolScript = bottom.GetComponent<Symbol>();
+            symbolScript?.TriggerOffReel();
+
+            // Assign new random symbol
+            GameObject newPrefab = prefabPool[Random.Range(0, prefabPool.Count)];
+            symbolScript.symbolName = newPrefab.name;
+            symbolScript.prefabReference = newPrefab;
+
+            // --- Add this block to update the sprite (if using SpriteRenderer) ---
+            var sr = bottom.GetComponent<SpriteRenderer>();
+            var newSr = newPrefab.GetComponent<SpriteRenderer>();
+            if (sr && newSr)
+                sr.sprite = newSr.sprite;
+            // ---------------------------------------------------------------
+
+            // Move to top
             currentSymbols.RemoveAt(currentSymbols.Count - 1);
 
             // Find the highest Y position
@@ -116,8 +132,12 @@ public class SlotReel : MonoBehaviour
                 if (s.transform.localPosition.y > maxY)
                     maxY = s.transform.localPosition.y;
 
-            GameObject newSymbol = CreateNewSymbol(prefabPool, maxY + symbolHeight);
-            currentSymbols.Insert(0, newSymbol);
+            bottom.transform.localPosition = new Vector3(0, maxY + symbolHeight, 0);
+
+            // Fire ONREEL event (now visible at top)
+            symbolScript?.TriggerOnReel();
+
+            currentSymbols.Insert(0, bottom);
         }
     }
 
@@ -131,27 +151,43 @@ public class SlotReel : MonoBehaviour
         // Snap container to zero
         symbolContainer.localPosition = Vector3.zero;
 
-        // Align all symbols to their final positions and animate
-        int finished = 0;
-        int symbolCount = currentSymbols.Count;
-        for (int i = 0; i < symbolCount; i++)
+        // Ensure we have exactly visibleSymbols in currentSymbols
+        while (currentSymbols.Count > visibleSymbols)
         {
-            GameObject symbol = currentSymbols[i];
-            float targetY = i * symbolHeight;
-            LeanTween.moveLocalY(symbol, targetY, 0.28f)
-                .setEase(LeanTweenType.easeOutElastic)
-                .setOnComplete(() =>
-                {
-                    finished++;
-                    if (finished == symbolCount)
-                    {
-                        FinalizeLanding();
-                        PlayStopEffect();
-                        isStopping = false;
-                        OnLandingComplete();
-                    }
-                });
+            pool.Return(currentSymbols[currentSymbols.Count - 1]);
+            currentSymbols.RemoveAt(currentSymbols.Count - 1);
         }
+        while (currentSymbols.Count < visibleSymbols)
+        {
+            float yPos = currentSymbols.Count * symbolHeight;
+            GameObject symbol = CreateNewSymbol(prefabPool, yPos);
+            currentSymbols.Add(symbol);
+        }
+
+        // Randomize all visible symbols on slam
+        for (int i = 0; i < currentSymbols.Count; i++)
+        {
+            var symbolObj = currentSymbols[i];
+            var symbolScript = symbolObj.GetComponent<Symbol>();
+            GameObject newPrefab = prefabPool[Random.Range(0, prefabPool.Count)];
+            symbolScript.symbolName = newPrefab.name;
+            symbolScript.prefabReference = newPrefab;
+
+            // Update the sprite (if using SpriteRenderer)
+            var sr = symbolObj.GetComponent<SpriteRenderer>();
+            var newSr = newPrefab.GetComponent<SpriteRenderer>();
+            if (sr && newSr)
+                sr.sprite = newSr.sprite;
+
+            // Snap to correct position
+            symbolObj.transform.localPosition = new Vector3(0, i * symbolHeight, 0);
+        }
+
+        // Animate or immediately finalize landing
+        AlignSymbolsWithDropAndRise();
+        PlayStopEffect();
+        isStopping = false;
+        OnLandingComplete();
     }
 
     GameObject CreateNewSymbol(List<GameObject> prefabPool, float yPos)
@@ -192,10 +228,10 @@ public class SlotReel : MonoBehaviour
         isStopping = false;
         PlaySpinSound();
 
-        // If first spin, fill up the reel
+        // Only fill if empty
         if (currentSymbols.Count == 0)
         {
-            for (int i = 0; i < visibleSymbols + 2; i++)
+            for (int i = 0; i < visibleSymbols; i++)
             {
                 GameObject symbol = CreateNewSymbol(prefabPool, i * symbolHeight);
                 currentSymbols.Add(symbol);
@@ -218,8 +254,21 @@ public class SlotReel : MonoBehaviour
     public void OnLandingComplete()
     {
         State = SlotMachineState.Idle;
-        isSpinning = false;
-
+        // Notify SlotMachine if all reels are idle
+        if (slotMachine != null)
+        {
+            bool allIdle = true;
+            foreach (var reel in slotMachine.reels)
+            {
+                if (reel.State != SlotMachineState.Idle)
+                {
+                    allIdle = false;
+                    break;
+                }
+            }
+            if (allIdle)
+                slotMachine.OnAllReelsLanded();
+        }
     }
 
     void AlignSymbolsWithDropAndRise()
