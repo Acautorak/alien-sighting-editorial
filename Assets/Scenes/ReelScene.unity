@@ -149,8 +149,10 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1640773268}
+  - {fileID: 911631850}
   - {fileID: 1933214597}
   - {fileID: 1136100258}
+  - {fileID: 1552058340}
   m_Father: {fileID: 911790590}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &207947182 stripped
@@ -305,6 +307,92 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!1 &911631849
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 911631850}
+  - component: {fileID: 911631851}
+  m_Layer: 0
+  m_Name: Reel1 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &911631850
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 911631849}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 75242901}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &911631851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 911631849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eb30b1d33cd90e45ac5d9dc0c9014cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  symbolHeight: 3.5
+  visibleSymbols: 6
+  speed: 25
+  easeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5169716
+      value: 0.987558
+      inSlope: 0.040377486
+      outSlope: 0.040377486
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.95666504
+      value: -0.040527344
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioSource: {fileID: 0}
+  spinClip: {fileID: 0}
+  stopClip: {fileID: 0}
+  stopVFX: {fileID: 0}
+  pool: {fileID: 1613530067}
+  finalSymbols: []
 --- !u!1 &911790588
 GameObject:
   m_ObjectHideFlags: 0
@@ -338,6 +426,8 @@ MonoBehaviour:
   - {fileID: 1640773269}
   - {fileID: 1933214598}
   - {fileID: 1136100259}
+  - {fileID: 911631851}
+  - {fileID: 1552058341}
   symbolPrefabs:
   - {fileID: 4549710149062776080}
   - {fileID: 3119990907716109086}
@@ -354,7 +444,7 @@ Transform:
   m_GameObject: {fileID: 911790588}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -407,8 +497,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   symbolHeight: 3.5
-  visibleSymbols: 4
-  speed: 30
+  visibleSymbols: 6
+  speed: 35
   easeCurve:
     serializedVersion: 2
     m_Curve:
@@ -540,6 +630,92 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2571160023413375608, guid: faf64b13670a2d0449f7ac4f2b56fa7b, type: 3}
   m_PrefabInstance: {fileID: 4659346824899169960}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1552058339
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1552058340}
+  - component: {fileID: 1552058341}
+  m_Layer: 0
+  m_Name: Reel3 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1552058340
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1552058339}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 75242901}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1552058341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1552058339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eb30b1d33cd90e45ac5d9dc0c9014cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  symbolHeight: 3.5
+  visibleSymbols: 6
+  speed: 40
+  easeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5169716
+      value: 0.987558
+      inSlope: 0.040377486
+      outSlope: 0.040377486
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.95666504
+      value: -0.040527344
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioSource: {fileID: 0}
+  spinClip: {fileID: 0}
+  stopClip: {fileID: 0}
+  stopVFX: {fileID: 0}
+  pool: {fileID: 1613530067}
+  finalSymbols: []
 --- !u!1 &1613530066
 GameObject:
   m_ObjectHideFlags: 0
@@ -629,7 +805,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   symbolHeight: 3.5
-  visibleSymbols: 4
+  visibleSymbols: 6
   speed: 20
   easeCurve:
     serializedVersion: 2
@@ -756,8 +932,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   symbolHeight: 3.5
-  visibleSymbols: 4
-  speed: 25
+  visibleSymbols: 6
+  speed: 30
   easeCurve:
     serializedVersion: 2
     m_Curve:
